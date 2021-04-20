@@ -8,7 +8,7 @@ project "TestField"
    cppdialect "C++17"
 
    targetdir("%{prj.location}/bin/%{cfg.buildcfg}/%{prj.name}")
-   objdir("%{prj.location}/bin/%{cfg.buildcfg}/out")
+   objdir("%{prj.location}/bin/%{cfg.buildcfg}")
 
    files {
       "src/**.cpp",
@@ -18,11 +18,13 @@ project "TestField"
 
    includedirs {
       "include",
-      "%{wks.location}/ZucchiniEngine/include"
+      "%{wks.location}/ZucchiniEngine/include",
+      "%{wks.location}/ZGraphics2D/include"
    }
 
    libdirs {
-      "%{wks.location}/ZucchiniEngine/lib"
+      "%{wks.location}/ZucchiniEngine/lib",
+      "%{wks.location}/ZGraphics2D/lib"
    }
 
    filter "system:windows"
@@ -55,15 +57,16 @@ project "TestField"
 
    filter "configurations:Debug"
       links {
-         "zengine-d"
+         "zengine-d",
+         "zgraphics2D-d"
       }
       runtime "Debug"
       symbols "On"
-      
 
    filter "configurations:Release"
       links {
-         "zengine"
+         "zengine",
+         "zgraphics2D"
       }
       runtime "Release"
       optimize "On"
