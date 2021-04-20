@@ -1,0 +1,3 @@
+[submodule "ZucchiniEngine"]
+	path = ZucchiniEngine
+	url = https://github.com/AarnoldGad/ZucchiniEngine.git
