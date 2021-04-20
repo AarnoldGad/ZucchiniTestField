@@ -18,13 +18,13 @@ project "TestField"
 
    includedirs {
       "include",
-      "%{wks.location}/ZucchiniEngine/include",
-      "%{wks.location}/ZGraphics2D/include"
+      "%{wks.location}/deps/ZucchiniEngine/include",
+      "%{wks.location}/deps/ZGraphics2D/include"
    }
 
    libdirs {
-      "%{wks.location}/ZucchiniEngine/lib",
-      "%{wks.location}/ZGraphics2D/lib"
+      "%{wks.location}/deps/ZucchiniEngine/lib",
+      "%{wks.location}/deps/ZGraphics2D/lib"
    }
 
    filter "system:windows"
