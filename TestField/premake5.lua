@@ -3,8 +3,8 @@ project "TestField"
    language "C++"
    cppdialect "C++17"
 
-   targetdir("%{prj.location}/bin/%{cfg.buildcfg}/%{prj.name}")
-   objdir("%{prj.location}/bin/%{cfg.buildcfg}")
+   targetdir("%{prj.location}/bin/%{cfg.buildcfg}")
+   objdir("%{prj.location}/bin/%{cfg.buildcfg}/out")
 
    files {
       "src/**.cpp",
@@ -49,6 +49,7 @@ project "TestField"
          "zengine-d",
          "zgraphics2D-d"
       }
+      defines "_DEBUG"
       runtime "Debug"
       symbols "On"
 
@@ -57,5 +58,6 @@ project "TestField"
          "zengine",
          "zgraphics2D"
       }
+      defines "NDEBUG"
       runtime "Release"
       optimize "On"

@@ -1,9 +1,18 @@
 #include <iostream>
 #include <zengine/zengine.hpp>
 
+#include "Application.hpp"
+
 int main(int argc, char **argv)
 {
-   ze::Logger logger("TESTFIELD", std::cout);
-   logger.info() << "Hello world";
+   Application app;
+   app.setTickRate(60);
+
+   app.initialise();
+
+   app.run();
+
+   app.terminate();
+
    return 0;
 }
