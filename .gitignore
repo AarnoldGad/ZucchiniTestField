@@ -6,6 +6,8 @@
 
 /*/.kdev4/
 /*/.vs/
+/.kdev4/
+/.vs/
 
 # Binaries
 
@@ -24,6 +26,7 @@
 *.mk
 *.make
 premake5
+premake5.exe
 Makefile
 
 # Projects

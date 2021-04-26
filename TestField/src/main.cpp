@@ -3,6 +3,25 @@
 
 #include "Application.hpp"
 
+class EventTest : public ze::Event
+{
+public:
+   std::string toString() const override { return "TestEvent"; }
+};
+
+void handler(EventTest& event)
+{
+   "Hello" | tee;
+}
+
+class A
+{
+public:
+   A() {}
+
+   void foo(ze::Event& event) {}
+};
+
 int main(int argc, char **argv)
 {
    Application app;
@@ -10,7 +29,7 @@ int main(int argc, char **argv)
 
    app.initialise();
 
-   app.run();
+   //app.run();
 
    app.terminate();
 
