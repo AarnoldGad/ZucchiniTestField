@@ -8,8 +8,6 @@ class Application : public ze::Core
 public:
    Application();
 
-   void tick(std::vector<ze::State*>& states, ze::Time deltaTime) override;
-
    ~Application() = default;
 
 };

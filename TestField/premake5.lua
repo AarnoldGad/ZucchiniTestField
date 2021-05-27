@@ -19,6 +19,18 @@ project "TestField"
    filter "system:windows"
       systemversion "latest"
 
+   filter { "system:windows", "configurations:Debug"}
+      postbuildcommands {
+         "copy /Y \"%{wks.location}ZucchiniEngine\\ZEngine\\lib\\zengine-d.dll\" \"bin\\Debug\\zengine-d.dll\"",
+         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D-d.dll\" \"bin\\Debug\\zgraphics2D-d.dll\""
+      }
+
+   filter { "system:windows", "configurations:Release"}
+      postbuildcommands {
+         "copy /Y \"%{wks.location}ZucchiniEngine\\ZEngine\\lib\\zengine.dll\" \"bin\\Release\\zengine.dll\"",
+         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D.dll\" \"bin\\Release\\zgraphics2D.dll\""
+      }
+
    filter "system:linux"
       includedirs {
          "/usr/include",
