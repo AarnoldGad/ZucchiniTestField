@@ -13,10 +13,12 @@ project "TestField"
    }
 
    includedirs {
-      "include"
+      "include",
+      "../ZGraphics2D/ZGraphics2D/deps/include"
    }
 
    filter "system:windows"
+      architecture "x86"
       systemversion "latest"
 
    filter { "system:windows", "configurations:Debug"}
@@ -25,10 +27,30 @@ project "TestField"
          "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D-d.dll\" \"bin\\Debug\\zgraphics2D-d.dll\""
       }
 
+   filter { "system:windows", "configurations:Debug", "architecture:x86"}
+      postbuildcommands {
+         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\lib\\Win32\\glfw3.dll\" \"bin\\Debug\\glfw3.dll\""
+      }
+
+   filter { "system:windows", "configurations:Debug", "architecture:x86_64"}
+      postbuildcommands {
+         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\lib\\Win64\\glfw3.dll\" \"bin\\Debug\\glfw3.dll\""
+      }
+
    filter { "system:windows", "configurations:Release"}
       postbuildcommands {
          "copy /Y \"%{wks.location}ZucchiniEngine\\ZEngine\\lib\\zengine.dll\" \"bin\\Release\\zengine.dll\"",
          "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D.dll\" \"bin\\Release\\zgraphics2D.dll\""
+      }
+      
+   filter { "system:windows", "configurations:Release", "architecture:x86"}
+      postbuildcommands {
+         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\lib\\Win32\\glfw3.dll\" \"bin\\Release\\glfw3.dll\""
+      }
+
+   filter { "system:windows", "configurations:Release", "architecture:x86_64"}
+      postbuildcommands {
+         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\lib\\Win64\\glfw3.dll\" \"bin\\Release\\glfw3.dll\""
       }
 
    filter "system:linux"
