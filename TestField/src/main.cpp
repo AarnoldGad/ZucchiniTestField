@@ -6,16 +6,26 @@
 
 #include <zengine/Memory/New.hpp>
 
+void handler(zg::WindowClosedEvent& event)
+{
+   ze::Core::GetApplication().stop();
+}
+
 int main(int argc, char **argv)
 {
-   //Application app;
-   //app.setTickRate(60);
+   Application app;
+   app.setTickRate(60);
 
-   //app.initialise();
+   zg::GraphicsEngine gfx;
 
-   //app.run();
+   app.initialise();
+   app.connectEngine(gfx);
 
-   //app.terminate();
+   ze::Subscriber<zg::WindowClosedEvent> sub = app.useEventBusTo().subscribe<zg::WindowClosedEvent>(&handler);
+
+   app.run();
+   
+   app.terminate();
    
    return 0;
 }
