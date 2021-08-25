@@ -13,60 +13,55 @@ project "TestField"
    }
 
    includedirs {
-      "include",
+      "include"
+   }
+
+   sysincludedirs {
       "../ZGraphics2D/ZGraphics2D/deps/glad/include",
       "../ZGraphics2D/ZGraphics2D/deps/glfw/include",
       "../ZGraphics2D/ZGraphics2D/deps/glm"
    }
 
    filter "system:windows"
-      architecture "x86"
       systemversion "latest"
 
    filter { "system:windows", "configurations:Debug"}
       postbuildcommands {
          "copy /Y \"%{wks.location}ZucchiniEngine\\ZEngine\\lib\\zengine-d.dll\" \"bin\\Debug\\zengine-d.dll\"",
-         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D-d.dll\" \"bin\\Debug\\zgraphics2D-d.dll\""
-      }
-
-   filter { "system:windows", "configurations:Debug", "architecture:x86"}
-      postbuildcommands {
-         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\glfw\\lib\\Win32\\glfw3.dll\" \"bin\\Debug\\glfw3.dll\""
-      }
-
-   filter { "system:windows", "configurations:Debug", "architecture:x86_64"}
-      postbuildcommands {
+         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D-d.dll\" \"bin\\Debug\\zgraphics2D-d.dll\"",
          "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\glfw\\lib\\Win64\\glfw3.dll\" \"bin\\Debug\\glfw3.dll\""
       }
 
    filter { "system:windows", "configurations:Release"}
       postbuildcommands {
          "copy /Y \"%{wks.location}ZucchiniEngine\\ZEngine\\lib\\zengine.dll\" \"bin\\Release\\zengine.dll\"",
-         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D.dll\" \"bin\\Release\\zgraphics2D.dll\""
-      }
-      
-   filter { "system:windows", "configurations:Release", "architecture:x86"}
-      postbuildcommands {
-         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\glfw\\lib\\Win32\\glfw3.dll\" \"bin\\Release\\glfw3.dll\""
-      }
-
-   filter { "system:windows", "configurations:Release", "architecture:x86_64"}
-      postbuildcommands {
+         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D.dll\" \"bin\\Release\\zgraphics2D.dll\"",
          "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\glfw\\lib\\Win64\\glfw3.dll\" \"bin\\Release\\glfw3.dll\""
       }
 
    filter "system:linux"
-      includedirs {
+      sysincludedirs {
          "/usr/include",
          "/usr/local/include"
       }
-      libdirs {
+      syslibdirs {
          "/usr/lib",
          "/usr/local/lib"
       }
       links {
          "dl",
          "pthread"
+      }
+
+   filter "system:macosx"
+     buildoptions {
+         "-Wall", "-Wextra", "-Wold-style-cast", "-Woverloaded-virtual", "-Wfloat-equal", "-Wwrite-strings",
+         "-Wpointer-arith", "-Wcast-qual", "-Wcast-align", "-Wconversion", "-Wshadow", "-Wredundant-decls",
+         "-Wdouble-promotion", "-Winit-self", "-Wswitch-default", "-Wswitch-enum", "-Wundef", "-Winline",
+         "-m64", "-fexceptions", "-pedantic"
+      }
+      linkoptions {
+         "-m64"
       }
 
    filter { "action:gmake*", "toolset:gcc" }

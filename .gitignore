@@ -4,9 +4,9 @@
 
 # Projects
 
+*.xcworkspace
+/*/*.xcodeproj/
 /*/.kdev4/
-/*/.vs/
-/.kdev4/
 /.vs/
 
 # Binaries
@@ -16,10 +16,10 @@
 
 # Files
 
+*.DS_Store
 *.gch
 *.log
 *.exe
-*.leu
 
 # Build Generators
 
@@ -27,7 +27,6 @@
 *.mk
 *.make
 premake5
-premake5.exe
 Makefile
 
 # Projects

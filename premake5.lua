@@ -2,12 +2,12 @@ workspace "ZucchiniTest"
    architecture "x86_64"
    configurations { "Debug", "Release" }
    
-   includedirs {
+   sysincludedirs {
       "ZucchiniEngine/ZEngine/include",
       "ZGraphics2D/ZGraphics2D/include"
    }
    
-   libdirs {
+   syslibdirs {
       "ZucchiniEngine/ZEngine/lib",
       "ZGraphics2D/ZGraphics2D/lib"
    }
