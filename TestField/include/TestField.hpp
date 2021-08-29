@@ -14,7 +14,10 @@ public:
    void onDisconnection() override;
 
 private:
+   void render();
+
    zg::GraphicsEngine m_gfx;
+   ze::Listener<void ()> m_renderListener;
 };
 
 #endif // TF_APPLICATION

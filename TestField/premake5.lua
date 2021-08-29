@@ -19,7 +19,8 @@ project "TestField"
    sysincludedirs {
       "../ZGraphics2D/ZGraphics2D/deps/glad/include",
       "../ZGraphics2D/ZGraphics2D/deps/glfw/include",
-      "../ZGraphics2D/ZGraphics2D/deps/glm"
+      "../ZGraphics2D/ZGraphics2D/deps/glm",
+      "../ZGraphics2D/ZGraphics2D/deps/stb/include"
    }
 
    filter "system:windows"
