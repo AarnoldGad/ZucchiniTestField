@@ -1,17 +1,18 @@
 #include "TestField.hpp"
 
-TestField::TestField(zg::GraphicsSettings settings)
+TestField::TestField(zg::GraphicsSettings const& settings)
    : ze::Application("TestField"), m_gfx(settings), m_renderListener(&TestField::render, this)
 {
    APP_LOG_INFO("Creating new TestField...");
 
    m_gfx.renderingSignal.addListener(m_renderListener);
-   zg::Image icon("assets/icon.png", zg::Image::Format::RGBA);
 }
 
 void TestField::onConnection()
 {
    ze::Core::ConnectEngine(m_gfx);
+   zg::Image icon("assets/icon.png", zg::Image::Format::RGBA);
+   m_gfx.getWindow().setIcon(icon);
 }
 
 void TestField::tick(ze::Time deltaTime)

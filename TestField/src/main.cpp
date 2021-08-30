@@ -1,6 +1,6 @@
 #include <iostream>
 #include <zengine/zengine.hpp>
-#include <zgraphics2D/zgraphics2D.hpp>
+//#include <zgraphics2D/zgraphics2D.hpp>
 
 #include "TestField.hpp"
 
@@ -16,7 +16,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
    settings.context.versionMinor = 3;
    settings.context.openglProfile = zg::ContextSettings::Profile::Core;
    settings.context.forwardCompatibility = true;
-   settings.pos = zg::Window::PositionCentered;
+   settings.pos = zg::Window::PositionUndefined;
    TestField app(settings);
 
    ze::Core::PlaceApplication(app);

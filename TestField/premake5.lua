@@ -18,27 +18,18 @@ project "TestField"
 
    sysincludedirs {
       "../ZGraphics2D/ZGraphics2D/deps/glad/include",
-      "../ZGraphics2D/ZGraphics2D/deps/glfw/include",
+      "../ZGraphics2D/ZGraphics2D/deps/glfw/glfw/include",
       "../ZGraphics2D/ZGraphics2D/deps/glm",
       "../ZGraphics2D/ZGraphics2D/deps/stb/include"
    }
 
+   links {
+      "glfw3"
+   }
+
    filter "system:windows"
+      staticruntime "on"
       systemversion "latest"
-
-   filter { "system:windows", "configurations:Debug"}
-      postbuildcommands {
-         "copy /Y \"%{wks.location}ZucchiniEngine\\ZEngine\\lib\\zengine-d.dll\" \"bin\\Debug\\zengine-d.dll\"",
-         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D-d.dll\" \"bin\\Debug\\zgraphics2D-d.dll\"",
-         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\glfw\\lib\\Win64\\glfw3.dll\" \"bin\\Debug\\glfw3.dll\""
-      }
-
-   filter { "system:windows", "configurations:Release"}
-      postbuildcommands {
-         "copy /Y \"%{wks.location}ZucchiniEngine\\ZEngine\\lib\\zengine.dll\" \"bin\\Release\\zengine.dll\"",
-         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\lib\\zgraphics2D.dll\" \"bin\\Release\\zgraphics2D.dll\"",
-         "copy /Y \"%{wks.location}ZGraphics2D\\ZGraphics2D\\deps\\glfw\\lib\\Win64\\glfw3.dll\" \"bin\\Release\\glfw3.dll\""
-      }
 
    filter "system:linux"
       sysincludedirs {

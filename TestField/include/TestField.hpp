@@ -7,7 +7,7 @@
 class TestField : public ze::Application
 {
 public:
-   TestField(zg::GraphicsSettings settings);
+   TestField(zg::GraphicsSettings const& settings);
 
    void onConnection() override;
    void tick(ze::Time deltaTime) override;
