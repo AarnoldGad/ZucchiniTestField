@@ -7,17 +7,22 @@
 class TestField : public ze::Application
 {
 public:
-   TestField(zg::GraphicsSettings const& settings);
-
    void onConnection() override;
    void tick(ze::Time deltaTime) override;
+   void render();
    void onDisconnection() override;
 
-private:
-   void render();
+   TestField();
 
-   zg::GraphicsEngine m_gfx;
-   ze::Listener<void ()> m_renderListener;
+private:
+   void handleEvent(ze::Event& event);
+
+   ze::EventSubscriber<ze::Event> m_eventSubscriber;
+   zg::VertexArray m_vao;
+   zg::VertexBuffer m_vbo;
+   zg::IndexBuffer m_ebo;
+   zg::Shader m_shader;
+   zg::Texture m_texture;
 };
 
 #endif // TF_APPLICATION
