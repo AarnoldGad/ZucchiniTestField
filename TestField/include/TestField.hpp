@@ -23,6 +23,7 @@ private:
    zg::IndexBuffer m_ebo;
    zg::Shader m_shader;
    zg::Texture m_texture;
+   zg::Sprite m_sprite;
 };
 
 #endif // TF_APPLICATION

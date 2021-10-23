@@ -7,7 +7,7 @@ namespace
    "layout (location = 1) in vec2 texCoord;\n"
    "out vec2 iTexCoord;\n"
    "void main()\n"
-   "{ gl_Position = vec4(pos.x, pos.y, pos.z, 1.0); iTexCoord = texCoord; }\0";
+   "{ gl_Position = vec4(pos.x -0.5, pos.y -0.5, pos.z, 1.0); iTexCoord = texCoord; }\0";
    
    constexpr char const* fs = "#version 330\n"
    "out vec4 FragColor;\n"
@@ -16,25 +16,15 @@ namespace
    "void main()\n"
    "{ FragColor = texture(tex, iTexCoord); }\0";
 
-   constexpr float vertices[] =
-   {
-      -0.5f, -0.5f, 0.f, 0.f, 0.f,
-      -0.5f , 0.5f, 0.f, 0.f, 1.f,
-       0.5f, -0.5f, 0.f, 1.f, 0.f,
-       0.5f,  0.5f, 0.f, 1.f, 1.f,
-   };
-
    constexpr unsigned int elements[] =
    {
       0, 1, 2,
       1, 2, 3
    };
-
-   unsigned int vao;
 }
 
 TestField::TestField()
-   : ze::Application("TestField"), m_eventSubscriber(&TestField::handleEvent, this)
+   : ze::Application("TestField"), m_eventSubscriber(&TestField::handleEvent, this), m_sprite({ 1.f, 1.f })
 {
    APP_LOG_INFO("Creating new TestField...");
 
@@ -46,13 +36,28 @@ void TestField::onConnection()
    zg::Image icon("assets/icon.png", zg::Image::Format::RGBA);
    m_texture.loadImage(icon);
 
+   m_sprite.setTexture(&m_texture);
+
    zg::VertexLayout layout;
    layout.add<glm::vec3>(1);
    layout.add<glm::vec2>(1);
 
    m_vao.bind();
 
-   m_vbo.setData(sizeof(vertices), vertices);
+   m_vbo.resize(4*5*sizeof(float));
+   {
+      float* buffer = m_vbo.map<float>();
+      for (size_t i = 0; i < 4; ++i)
+      {
+         buffer[i*5] = reinterpret_cast<glm::vec3 const*>(m_sprite.getVertex(i)->getLocationData(0))->x;
+         buffer[i*5 + 1] = reinterpret_cast<glm::vec3 const*>(m_sprite.getVertex(i)->getLocationData(0))->y;
+         buffer[i*5 + 2] = reinterpret_cast<glm::vec3 const*>(m_sprite.getVertex(i)->getLocationData(0))->z;
+         buffer[i*5 + 3] = reinterpret_cast<glm::vec2 const*>(m_sprite.getVertex(i)->getLocationData(1))->x;
+         buffer[i*5 + 4] = reinterpret_cast<glm::vec2 const*>(m_sprite.getVertex(i)->getLocationData(1))->y;
+      }
+      m_vbo.unmap();
+   }
+
    m_ebo.setData(sizeof(elements), elements);
 
    m_vao.setLayout(layout);
