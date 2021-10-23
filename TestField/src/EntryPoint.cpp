@@ -1,14 +1,10 @@
-#include <iostream>
 #include <zengine/zengine.hpp>
 #include <zgraphics2D/zgraphics2D.hpp>
 
 #include "TestField.hpp"
 
-#include <zengine/Memory/New.hpp>
-
-int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
+void Main(ze::Arguments const& args)
 {
-   ze::Core::Initialise();
    ze::Core::SetTickRate(60);
 
    zg::GraphicsSettings settings;
@@ -29,8 +25,4 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 
    ze::Core::PlaceApplication(app);
    ze::Core::Run();
-
-   ze::Core::Terminate();
-
-   return 0;
 }
