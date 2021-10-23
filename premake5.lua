@@ -1,6 +1,7 @@
 workspace "ZucchiniTest"
    architecture "x86_64"
    configurations { "Debug", "Release" }
+   startproject "ZEngine"
 
    sysincludedirs {
       "ZucchiniEngine/ZEngineAPI/include",
