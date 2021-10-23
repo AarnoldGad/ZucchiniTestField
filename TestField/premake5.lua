@@ -31,8 +31,8 @@ project "TestField"
    }
 
    links {
-      "ZEngineAPI"
-      "glfw3"
+      "ZEngineAPI",
+      "glfw3",
       "ZGraphics2D"
    }
 
