@@ -1,18 +1,19 @@
 # Folders
 
-/.git/
+.git/
 
 # Projects
 
 *.xcworkspace
-/*/*.xcodeproj/
-/*/.kdev4/
-/.vs/
+*.xcodeproj/
+.kdev4/
+.vs/
 
 # Binaries
 
-/*/lib/
-/*/bin/
+lib/
+bin/
+obj/
 
 # Files
 
@@ -23,7 +24,6 @@
 
 # Build Generators
 
-/*/Makefile
 *.mk
 *.make
 premake5

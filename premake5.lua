@@ -1,10 +1,10 @@
 workspace "ZucchiniTest"
    architecture "x86_64"
    configurations { "Debug", "Release" }
-   startproject "ZEngine"
+   startproject "TestField"
 
    sysincludedirs {
-      "ZucchiniEngine/ZEngineAPI/include",
+      "ZucchiniEngine/ZEngine/include",
       "ZGraphics2D/ZGraphics2D/include"
    }
 
@@ -33,7 +33,6 @@ workspace "ZucchiniTest"
       runtime "Release"
       optimize "on"
 
-include "ZucchiniEngine/ZEngineAPI"
 include "ZucchiniEngine/ZEngine"
 include "ZGraphics2D/ZGraphics2D/deps/glfw"
 include "ZGraphics2D/ZGraphics2D"

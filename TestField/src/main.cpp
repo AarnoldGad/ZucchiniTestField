@@ -3,8 +3,9 @@
 
 #include "TestField.hpp"
 
-void Main(ze::Arguments const& args)
+int main(int argc, char* argv[])
 {
+   ze::Core::Initialise();
    ze::Core::SetTickRate(60);
 
    zg::GraphicsSettings settings;
@@ -25,4 +26,6 @@ void Main(ze::Arguments const& args)
 
    ze::Core::PlaceApplication(app);
    ze::Core::Run();
+
+   ze::Core::Terminate();
 }

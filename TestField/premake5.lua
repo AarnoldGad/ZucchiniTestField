@@ -1,17 +1,11 @@
 project "TestField"
-   kind "SharedLib"
+   kind "ConsoleApp"
    language "C++"
    cppdialect "C++20"
    staticruntime "off"
 
-   targetname("testfield")
-
-   filter "configurations:Debug"
-      targetsuffix "-d"
-   filter {}
-
    targetdir("%{prj.location}/bin")
-   objdir("%{prj.location}/bin/obj/%{cfg.buildcfg}")
+   objdir("%{prj.location}/obj/%{cfg.buildcfg}")
 
    files {
       "src/**.cpp",
@@ -31,7 +25,7 @@ project "TestField"
    }
 
    links {
-      "ZEngineAPI",
+      "ZEngine",
       "glfw3",
       "ZGraphics2D"
    }
