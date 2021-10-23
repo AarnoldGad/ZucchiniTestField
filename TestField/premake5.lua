@@ -1,10 +1,17 @@
 project "TestField"
-   kind "ConsoleApp"
+   kind "SharedLib"
    language "C++"
-   cppdialect "C++17"
+   cppdialect "C++20"
+   staticruntime "off"
 
-   targetdir("%{prj.location}/bin/%{cfg.buildcfg}")
-   objdir("%{prj.location}/bin/%{cfg.buildcfg}/out")
+   targetname("testfield")
+
+   filter "configurations:Debug"
+      targetsuffix "-d"
+   filter {}
+
+   targetdir("%{prj.location}/bin")
+   objdir("%{prj.location}/bin/obj/%{cfg.buildcfg}")
 
    files {
       "src/**.cpp",
@@ -24,36 +31,18 @@ project "TestField"
    }
 
    links {
+      "ZEngineAPI"
       "glfw3"
+      "ZGraphics2D"
    }
 
    filter "system:windows"
-      staticruntime "on"
       systemversion "latest"
 
-   filter "system:linux"
-      sysincludedirs {
-         "/usr/include",
-         "/usr/local/include"
-      }
-      syslibdirs {
-         "/usr/lib",
-         "/usr/local/lib"
-      }
+   filter {"system:linux"}
       links {
          "dl",
          "pthread"
-      }
-
-   filter "system:macosx"
-     buildoptions {
-         "-Wall", "-Wextra", "-Wold-style-cast", "-Woverloaded-virtual", "-Wfloat-equal", "-Wwrite-strings",
-         "-Wpointer-arith", "-Wcast-qual", "-Wcast-align", "-Wconversion", "-Wshadow", "-Wredundant-decls",
-         "-Wdouble-promotion", "-Winit-self", "-Wswitch-default", "-Wswitch-enum", "-Wundef", "-Winline",
-         "-m64", "-fexceptions", "-pedantic"
-      }
-      linkoptions {
-         "-m64"
       }
 
    filter { "action:gmake*", "toolset:gcc" }
@@ -66,21 +55,3 @@ project "TestField"
       linkoptions {
          "-m64"
       }
-
-   filter "configurations:Debug"
-      links {
-         "zengine-d",
-         "zgraphics2D-d"
-      }
-      defines "_DEBUG"
-      runtime "Debug"
-      symbols "On"
-
-   filter "configurations:Release"
-      links {
-         "zengine",
-         "zgraphics2D"
-      }
-      defines "NDEBUG"
-      runtime "Release"
-      optimize "On"
