@@ -26,11 +26,13 @@ project "TestField"
 
    links {
       "ZEngine",
-      "glfw3",
       "ZGraphics2D"
    }
 
    filter "system:windows"
+      links {
+         "glfw3"
+      }
       systemversion "latest"
 
    filter {"system:linux"}
