@@ -2,20 +2,6 @@
 
 namespace
 {
-   constexpr char const* vs = "#version 330\n"
-   "layout (location = 0) in vec3 pos;\n"
-   "layout (location = 1) in vec2 texCoord;\n"
-   "out vec2 iTexCoord;\n"
-   "void main()\n"
-   "{ gl_Position = vec4(pos.x -0.5, pos.y -0.5, pos.z, 1.0); iTexCoord = texCoord; }\0";
-   
-   constexpr char const* fs = "#version 330\n"
-   "out vec4 FragColor;\n"
-   "in vec2 iTexCoord;\n"
-   "uniform sampler2D tex;\n"
-   "void main()\n"
-   "{ FragColor = texture(tex, iTexCoord); }\0";
-
    constexpr unsigned int elements[] =
    {
       0, 1, 2,
@@ -24,7 +10,8 @@ namespace
 }
 
 TestField::TestField()
-   : ze::Application("TestField"), m_eventSubscriber(&TestField::handleEvent, this), m_sprite({ 1.f, 1.f })
+   : ze::Application("TestField"), m_polygonMode(false), m_eventSubscriber(&TestField::handleEvent, this), m_sprite({ 1.f, 1.f }),
+     m_camera(ze::degrees(85.f), 800.f / 600.f, { 0.f, 0.f, -1.f }, {0.f, 0.f, 0.f})
 {
    APP_LOG_INFO("Creating new TestField...");
 
@@ -33,8 +20,11 @@ TestField::TestField()
 
 void TestField::onConnection()
 {
+   zg::Image::FlipOnLoad(true);
+
    zg::Image icon("assets/icon.png", zg::Image::Format::RGBA);
    m_texture.loadImage(icon);
+
 
    m_sprite.setTexture(&m_texture);
 
@@ -62,21 +52,47 @@ void TestField::onConnection()
 
    m_vao.setLayout(layout);
 
-   m_shader.loadSource(vs, fs);
+   m_shader.loadFile("assets/shaders/default.vs", "assets/shaders/default.fs");
+
+   m_sprite.setOrigin({ 0.5f, 0.5f, 0.f });
 }
 
 void TestField::tick(ze::Time deltaTime)
 {
 //   APP_LOG_DEBUG("%d", deltaTime.asMilliseconds());
-   if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::Escape))
-      ze::Core::Stop();
+   glm::vec3 offset{};
+   glm::vec3 look = m_camera.getTarget() - m_camera.getPosition();
+   glm::vec3 right = glm::cross(look, m_camera.getUp());
+
+   if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::W))
+      offset += glm::normalize(look) * deltaTime.asSecondsFloat() * 2.f;
+   if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::A))
+      offset -= glm::normalize(right) * deltaTime.asSecondsFloat() * 2.f;
+   if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::S))
+      offset -= glm::normalize(look) * deltaTime.asSecondsFloat() * 2.f;
+   if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::D))
+      offset += glm::normalize(right) * deltaTime.asSecondsFloat() * 2.f;
+
+   if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::Space))
+      offset += glm::normalize(m_camera.getUp()) * deltaTime.asSecondsFloat() * 2.f;
+   if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::LeftControl))
+      offset -= glm::normalize(m_camera.getUp()) * deltaTime.asSecondsFloat() * 2.f;
+
+   m_camera.move(offset);
 }
 
 void TestField::render()
 {
-//   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
    m_shader.use();
+
+   glActiveTexture(GL_TEXTURE0);
    m_texture.bind();
+   m_shader.setInteger("tex0", 0);
+
+   m_shader.setMatrix4("model", m_sprite.getTransformation());
+   m_shader.setMatrix4("view", m_camera.getView());
+   m_shader.setMatrix4("projection", m_camera.getProjection());
+
    m_vao.bind();
    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
@@ -84,6 +100,29 @@ void TestField::render()
 void TestField::handleEvent(ze::Event& event)
 {
    APP_LOG_DEBUG(event.toString());
+   ze::EventDispatcher dispatcher(event);
+
+   // Close window
+   dispatcher.dispatch<zg::WindowClosedEvent>(
+   [](zg::WindowClosedEvent& event)
+   {
+      ze::Core::Stop();
+   });
+
+   dispatcher.dispatch<zg::KeyPressedEvent>(
+   [&](zg::KeyPressedEvent& event)
+   {
+      if (event.getKey() == zg::Keyboard::Key::P) // Toggle polygon mode
+      {
+         m_polygonMode = !m_polygonMode;
+         if (m_polygonMode)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+         else
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+      }
+      else if (event.getKey() == zg::Keyboard::Key::Escape) // Close Window
+         ze::Core::Stop();
+   });
 }
 
 void TestField::onDisconnection()

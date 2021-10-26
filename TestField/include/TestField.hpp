@@ -17,6 +17,8 @@ public:
 private:
    void handleEvent(ze::Event& event);
 
+   bool m_polygonMode;
+
    ze::EventSubscriber<ze::Event> m_eventSubscriber;
    zg::VertexArray m_vao;
    zg::VertexBuffer m_vbo;
@@ -24,6 +26,7 @@ private:
    zg::Shader m_shader;
    zg::Texture m_texture;
    zg::Sprite m_sprite;
+   zg::Camera m_camera;
 };
 
 #endif // TF_APPLICATION
