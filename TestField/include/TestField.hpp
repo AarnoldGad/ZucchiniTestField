@@ -18,6 +18,7 @@ private:
    void handleEvent(ze::Event& event);
 
    bool m_polygonMode;
+   bool m_grabMouse;
 
    ze::EventSubscriber<ze::Event> m_eventSubscriber;
    zg::VertexArray m_vao;

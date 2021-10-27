@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
    settings.context.openglProfile = zg::ContextSettings::Profile::Core;
    settings.context.forwardCompatibility = true;
    settings.pos = zg::Window::PositionCentered;
+   //settings.color = { 0.1f, 0.02f, 0.1f, 1.f };
 
    zg::GraphicsEngine gfx(settings);
 

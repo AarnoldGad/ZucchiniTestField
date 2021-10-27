@@ -10,8 +10,8 @@ namespace
 }
 
 TestField::TestField()
-   : ze::Application("TestField"), m_polygonMode(false), m_eventSubscriber(&TestField::handleEvent, this), m_sprite({ 1.f, 1.f }),
-     m_camera(ze::degrees(85.f), 800.f / 600.f, { 0.f, 0.f, -1.f }, {0.f, 0.f, 0.f})
+   : ze::Application("TestField"), m_polygonMode(false), m_grabMouse(true), m_eventSubscriber(&TestField::handleEvent, this), m_sprite({ 1.f, 1.f }),
+     m_camera(ze::degrees(85.f), 800.f / 600.f, { 0.f, 0.f, 1.f }, {0.f, 0.f, -1.f})
 {
    APP_LOG_INFO("Creating new TestField...");
 
@@ -20,6 +20,7 @@ TestField::TestField()
 
 void TestField::onConnection()
 {
+   zg::Mouse::SetCursorVisible(false);
    zg::Image::FlipOnLoad(true);
 
    zg::Image icon("assets/icon.png", zg::Image::Format::RGBA);
@@ -61,15 +62,15 @@ void TestField::tick(ze::Time deltaTime)
 {
 //   APP_LOG_DEBUG("%d", deltaTime.asMilliseconds());
    glm::vec3 offset{};
-   glm::vec3 look = m_camera.getTarget() - m_camera.getPosition();
-   glm::vec3 right = glm::cross(look, m_camera.getUp());
+   glm::vec3 front = m_camera.getFront();
+   glm::vec3 right = glm::cross(front, m_camera.getUp());
 
    if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::W))
-      offset += glm::normalize(look) * deltaTime.asSecondsFloat() * 2.f;
+      offset += glm::normalize(front) * deltaTime.asSecondsFloat() * 2.f;
    if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::A))
       offset -= glm::normalize(right) * deltaTime.asSecondsFloat() * 2.f;
    if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::S))
-      offset -= glm::normalize(look) * deltaTime.asSecondsFloat() * 2.f;
+      offset -= glm::normalize(front) * deltaTime.asSecondsFloat() * 2.f;
    if (zg::Keyboard::IsKeyPressed(zg::Keyboard::Key::D))
       offset += glm::normalize(right) * deltaTime.asSecondsFloat() * 2.f;
 
@@ -79,6 +80,10 @@ void TestField::tick(ze::Time deltaTime)
       offset -= glm::normalize(m_camera.getUp()) * deltaTime.asSecondsFloat() * 2.f;
 
    m_camera.move(offset);
+
+   glm::ivec2 windowCentre = glm::ivec2(800 / 2, 600 / 2);
+   if (m_grabMouse)
+      zg::Mouse::SetPosition(windowCentre);
 }
 
 void TestField::render()
@@ -104,25 +109,42 @@ void TestField::handleEvent(ze::Event& event)
 
    // Close window
    dispatcher.dispatch<zg::WindowClosedEvent>(
-   [](zg::WindowClosedEvent& event)
-   {
-      ze::Core::Stop();
-   });
+      [](zg::WindowClosedEvent& event)
+      {
+         ze::Core::Stop();
+      });
 
    dispatcher.dispatch<zg::KeyPressedEvent>(
-   [&](zg::KeyPressedEvent& event)
-   {
-      if (event.getKey() == zg::Keyboard::Key::P) // Toggle polygon mode
+      [&](zg::KeyPressedEvent& event)
       {
-         m_polygonMode = !m_polygonMode;
-         if (m_polygonMode)
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-         else
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-      }
-      else if (event.getKey() == zg::Keyboard::Key::Escape) // Close Window
-         ze::Core::Stop();
-   });
+         if (event.getKey() == zg::Keyboard::Key::P) // Toggle polygon mode
+         {
+            m_polygonMode = !m_polygonMode;
+            if (m_polygonMode)
+               glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            else
+               glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+         }
+         else if (event.getKey() == zg::Keyboard::Key::Escape) // Close Window
+            ze::Core::Stop();
+         else if (event.getKey() == zg::Keyboard::Key::M)
+         {
+            m_grabMouse = !m_grabMouse;
+            zg::Mouse::SetCursorVisible(!m_grabMouse);
+         }
+      });
+
+   dispatcher.dispatch<zg::MouseMovedEvent>(
+      [&](zg::MouseMovedEvent& event)
+      {
+         if (!m_grabMouse) return;
+
+         glm::ivec2 offset = glm::ivec2(400, 300) - event.getPosition();
+         glm::mat4 rotation = glm::mat4(1.f);
+         rotation = glm::rotate(rotation, ze::degrees(offset.x).asRadians() * 0.1f, glm::normalize(m_camera.getUp()));
+         rotation = glm::rotate(rotation, ze::degrees(offset.y).asRadians() * 0.1f, glm::normalize(glm::cross(m_camera.getFront(), m_camera.getUp())));
+         m_camera.setFront(glm::mat3(rotation) * m_camera.getFront());
+      });
 }
 
 void TestField::onDisconnection()
