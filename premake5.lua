@@ -4,16 +4,14 @@ workspace "ZucchiniTest"
    startproject "TestField"
 
    sysincludedirs {
-      "ZucchiniEngine/ZEngine/include",
-      "ZGraphics2D/ZGraphics2D/include"
+      "ZucchiniEngine/ZEngine/include"
    }
 
    syslibdirs {
-      "ZucchiniEngine/lib",
-      "ZGraphics2D/lib"
+      "ZucchiniEngine/lib"
    }
 
-   filter {"system:linux or macosx"}
+   filter {"system:macosx"}
       sysincludedirs {
          "/usr/include",
          "/usr/local/include"

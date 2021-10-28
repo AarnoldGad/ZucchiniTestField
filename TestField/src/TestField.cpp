@@ -20,12 +20,12 @@ TestField::TestField()
 
 void TestField::onConnection()
 {
-   zg::Mouse::SetCursorVisible(false);
+   zg::Mouse::SetCursorMode(zg::Mouse::CursorMode::Hidden);
+   zg::Mouse::SetRawMouseMotion(true);
    zg::Image::FlipOnLoad(true);
 
    zg::Image icon("assets/icon.png", zg::Image::Format::RGBA);
    m_texture.loadImage(icon);
-
 
    m_sprite.setTexture(&m_texture);
 
@@ -130,7 +130,7 @@ void TestField::handleEvent(ze::Event& event)
          else if (event.getKey() == zg::Keyboard::Key::M)
          {
             m_grabMouse = !m_grabMouse;
-            zg::Mouse::SetCursorVisible(!m_grabMouse);
+            zg::Mouse::SetCursorMode(m_grabMouse ? zg::Mouse::CursorMode::Hidden : zg::Mouse::CursorMode::Normal);
          }
       });
 

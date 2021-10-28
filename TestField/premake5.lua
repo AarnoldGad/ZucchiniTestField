@@ -18,10 +18,15 @@ project "TestField"
    }
 
    sysincludedirs {
+      "../ZGraphics2D/ZGraphics2D/include",
       "../ZGraphics2D/ZGraphics2D/deps/glad/include",
       "../ZGraphics2D/ZGraphics2D/deps/glfw/glfw/include",
       "../ZGraphics2D/ZGraphics2D/deps/glm",
       "../ZGraphics2D/ZGraphics2D/deps/stb/include"
+   }
+
+   syslibdirs {
+      "ZGraphics2D/lib"
    }
 
    links {
