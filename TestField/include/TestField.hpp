@@ -12,21 +12,29 @@ public:
    void render();
    void onDisconnection() override;
 
-   TestField();
+   TestField(zg::GraphicsEngine* gfx);
 
 private:
    void handleEvent(ze::Event& event);
 
+   zg::GraphicsEngine* m_gfx;
+   ze::EventSubscriber<ze::Event> m_eventSubscriber;
+   ze::Listener<void ()> m_renderListener;
+
    bool m_polygonMode;
    bool m_grabMouse;
+   float m_sensitivity;
+   float m_speed;
 
-   ze::EventSubscriber<ze::Event> m_eventSubscriber;
-   zg::VertexArray m_vao;
-   zg::VertexBuffer m_vbo;
-   zg::IndexBuffer m_ebo;
+   float m_pitch;
+   float m_yaw;
+
+   zg::VertexLayout m_layout;
+
+   zg::DefaultRenderer m_renderer;
    zg::Shader m_shader;
    zg::Texture m_texture;
-   zg::Sprite m_sprite;
+   zg::Cube m_sprite;
    zg::Camera m_camera;
 };
 

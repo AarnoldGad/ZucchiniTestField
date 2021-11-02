@@ -15,15 +15,13 @@ int main(int argc, char* argv[])
    settings.context.openglProfile = zg::ContextSettings::Profile::Core;
    settings.context.forwardCompatibility = true;
    settings.pos = zg::Window::PositionCentered;
-   //settings.color = { 0.1f, 0.02f, 0.1f, 1.f };
+   settings.color = { 0.1f, 0.02f, 0.1f, 1.f };
 
    zg::GraphicsEngine gfx(settings);
 
    ze::Core::ConnectEngine(gfx);
 
-   TestField app;
-   ze::Listener<void ()> renderListener(&TestField::render, &app);
-   gfx.renderingSignal.addListener(renderListener);
+   TestField app(&gfx);
 
    ze::Core::PlaceApplication(app);
    ze::Core::Run();

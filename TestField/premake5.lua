@@ -26,7 +26,7 @@ project "TestField"
    }
 
    syslibdirs {
-      "ZGraphics2D/lib"
+      "../ZGraphics2D/lib"
    }
 
    links {
