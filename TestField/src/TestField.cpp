@@ -62,8 +62,7 @@ void TestField::render()
 {
    m_renderer.submit(m_sprite, m_sprite.getTransformation());
 
-   m_renderer.setView(m_camera.getView());
-   m_renderer.setProjection(m_camera.getProjection());
+   m_renderer.setViewProjection(&m_camera);
 
    m_renderer.render(m_shader);
 }
