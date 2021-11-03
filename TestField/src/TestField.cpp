@@ -3,10 +3,12 @@
 TestField::TestField(zg::GraphicsEngine* gfx)
    : ze::Application("TestField"), m_gfx(gfx),
      m_eventSubscriber(&TestField::handleEvent, this), m_renderListener(&TestField::render, this),
-     m_polygonMode(false), m_grabMouse(false), m_sensitivity(0.1f), m_speed(2.f), m_pitch(0.f), m_yaw(-90.f),
-     m_sprite({ .5f, .5f, .5f }), m_camera(ze::degrees(85.f), 800.f / 600.f, { 0.f, 0.f, 1.f }, {0.f, 0.f, -1.f})
+     m_polygonMode(false), m_grabMouse(false), m_sensitivity(0.1f), m_speed(2.f), m_sprite({ .5f, .5f, .5f }),
+     m_camera(ze::degrees(85.f), 800.f / 600.f, 0.2f, { 0.f, 0.f, 1.f }, {0.f, 0.f, -1.f})
 {
    APP_LOG_INFO("Creating new TestField...");
+
+   m_camera.setYaw(ze::degrees(-90.f));
 
    m_gfx->renderingSignal.addListener(m_renderListener);
    ze::Core::UseEventBus().addSubscriber(m_eventSubscriber);
@@ -112,16 +114,7 @@ void TestField::handleEvent(ze::Event& event)
          glm::ivec2 windowSize = m_gfx->getWindow().getSize();
          glm::ivec2 offset = (windowSize / 2) - event.getPosition();
 
-         m_pitch += offset.y * m_sensitivity;
-         m_yaw -= offset.x * m_sensitivity;
-
-         m_pitch >= 89.9f ? m_pitch = 89.9f : (m_pitch <= -89.9f ? m_pitch = -89.9f : m_pitch);
-
-         glm::vec3 front;
-         front.x = glm::cos(glm::radians(m_pitch)) * glm::cos(glm::radians(m_yaw));
-         front.y = glm::sin(glm::radians(m_pitch));
-         front.z = glm::cos(glm::radians(m_pitch)) * glm::sin(glm::radians(m_yaw));
-         m_camera.setFront(front);
+         m_camera.turn(offset);
 
          zg::Mouse::SetPosition(windowSize / 2);
       });

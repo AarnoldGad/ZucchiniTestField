@@ -26,16 +26,13 @@ private:
    float m_sensitivity;
    float m_speed;
 
-   float m_pitch;
-   float m_yaw;
-
    zg::VertexLayout m_layout;
 
    zg::DefaultRenderer m_renderer;
    zg::Shader m_shader;
    zg::Texture m_texture;
    zg::Cube m_sprite;
-   zg::Camera m_camera;
+   zg::FPSCamera m_camera;
 };
 
 #endif // TF_APPLICATION
