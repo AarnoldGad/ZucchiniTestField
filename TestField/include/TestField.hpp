@@ -1,8 +1,10 @@
-#ifndef TF_APPLICATION
+﻿#ifndef TF_APPLICATION
 #define TF_APPLICATION
 
 #include <zengine/zengine.hpp>
 #include <zgraphics2D/zgraphics2D.hpp>
+
+#include "TestLayer.hpp"
 
 class TestField : public ze::Application
 {
@@ -21,18 +23,7 @@ private:
    ze::EventSubscriber<ze::Event> m_eventSubscriber;
    ze::Listener<void ()> m_renderListener;
 
-   bool m_polygonMode;
-   bool m_grabMouse;
-   float m_sensitivity;
-   float m_speed;
-
-   zg::VertexLayout m_layout;
-
-   zg::DefaultRenderer m_renderer;
-   zg::Shader m_shader;
-   zg::Texture m_texture;
-   zg::Cube m_sprite;
-   zg::FPSCamera m_camera;
+   TestLayer m_testLayer;
 };
 
 #endif // TF_APPLICATION

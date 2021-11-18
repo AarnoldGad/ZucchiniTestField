@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
    ze::Core::SetTickRate(60);
 
    zg::GraphicsSettings settings;
-   settings.window.resisable = true;
+   settings.window.resisable = false;
    settings.context.versionMajor = 3;
    settings.context.versionMinor = 3;
    settings.context.openglProfile = zg::ContextSettings::Profile::Core;
@@ -24,7 +24,10 @@ int main(int argc, char* argv[])
    TestField app(&gfx);
 
    ze::Core::PlaceApplication(app);
+
    ze::Core::Run();
 
    ze::Core::Terminate();
+
+   return 0;
 }
