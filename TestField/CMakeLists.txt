@@ -20,7 +20,7 @@ TARGET_COMPILE_DEFINITIONS(testfield PRIVATE
                            )
 
 TARGET_INCLUDE_DIRECTORIES(testfield PUBLIC
-                           "${PROJECT_SOURCE_DIR}/TestFIeld/include"
+                           "${PROJECT_SOURCE_DIR}/TestField/include"
                            "${PROJECT_BINARY_DIR}"
                            )
 

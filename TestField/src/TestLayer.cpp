@@ -57,10 +57,10 @@ void TestLayer::moveCamera(ze::Time deltaTime)
 
 void TestLayer::render()
 {
-   m_renderer.submit(m_sprite, m_sprite.getTransformation());
+   //m_renderer.submit(m_sprite, m_sprite.getTransformation());
 
-   m_renderer.setViewProjection(&m_camera);
-   m_renderer.render(*ze::ResourceManager<zg::Shader>::get("default"));
+   //m_renderer.setViewProjection(&m_camera);
+   //m_renderer.render(*ze::ResourceManager<zg::Shader>::get("default"));
 }
 
 void TestLayer::handleEvent(ze::Event& event)
