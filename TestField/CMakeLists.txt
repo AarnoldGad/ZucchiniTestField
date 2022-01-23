@@ -9,6 +9,11 @@ SET_TARGET_PROPERTIES(testfield PROPERTIES
                       )
 
 TARGET_SOURCES(testfield PRIVATE
+               include/TestField.hpp
+               include/TestLayer.hpp
+               )
+
+TARGET_SOURCES(testfield PRIVATE
                src/main.cpp
                src/TestField.cpp
                src/TestLayer.cpp
