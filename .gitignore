@@ -24,6 +24,7 @@ obj/
 *.exe
 *.swp
 *.vim
+*.json
 
 # Build Generators
 
