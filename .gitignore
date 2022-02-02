@@ -1,6 +1,7 @@
 # Folders
 
 .git/
+.cache/
 
 # Projects
 
@@ -21,6 +22,9 @@ obj/
 *.gch
 *.log
 *.exe
+*.swp
+*.vim
+*.json
 
 # Build Generators
 
