@@ -1,8 +1,8 @@
 #ifndef TF_TESTLAYER_HPP
 #define TF_TESTLAYER_HPP
 
-#include "zengine/zengine.hpp"
-#include "zgraphics2D/zgraphics2D.hpp"
+#include <zengine/zengine.hpp>
+#include <zgraphics2D/zgraphics2D.hpp>
 
 class TestLayer : public ze::Layer
 {
@@ -26,10 +26,8 @@ private:
    bool m_grabMouse;
    float m_speed;
 
-   zg::VertexLayout m_layout;
-
    zg::DefaultRenderer m_renderer;
-   zg::Cube m_sprite;
+   zg::Sprite m_sprite;
    zg::FPSCamera m_camera;
 };
 

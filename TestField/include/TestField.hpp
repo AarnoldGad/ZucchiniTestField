@@ -14,16 +14,18 @@ public:
    void render();
    void onDisconnection() override;
 
-   TestField(zg::GraphicsEngine* gfx);
+   explicit TestField(zg::GraphicsSettings const& settings);
 
 private:
    void handleEvent(ze::Event& event);
 
-   zg::GraphicsEngine* m_gfx;
+   zg::GraphicsEngine m_gfx;
+
+   // TODO Layer stack
+   std::unique_ptr<TestLayer> m_layer;
+
    ze::EventSubscriber<ze::Event> m_eventSubscriber;
    ze::Listener<void ()> m_renderListener;
-
-   TestLayer m_testLayer;
 };
 
 #endif // TF_APPLICATION

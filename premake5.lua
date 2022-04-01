@@ -11,7 +11,7 @@ workspace "ZucchiniTest"
       "ZucchiniEngine/lib"
    }
 
-   filter {"system:macosx"}
+   filter {"system:macosx or linux"}
       sysincludedirs {
          "/usr/include",
          "/usr/local/include"
@@ -32,6 +32,6 @@ workspace "ZucchiniTest"
       optimize "on"
 
 include "ZucchiniEngine/ZEngine"
-include "ZGraphics2D/ZGraphics2D/deps/glfw"
+include "ZGraphics2D/ZGraphics2D/deps"
 include "ZGraphics2D/ZGraphics2D"
 include "TestField"

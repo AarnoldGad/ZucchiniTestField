@@ -1,30 +1,44 @@
-﻿#include "TestLayer.hpp"
+#include "TestLayer.hpp"
+
+#include <glad/glad.h>
 
 TestLayer::TestLayer(zg::GraphicsEngine* gfx)
    : ze::Layer("Test"), m_gfx(gfx),
      m_polygonMode(false), m_grabMouse(false), m_speed(2.f),
-     m_sprite({ .5f, .5f, .5f }), m_camera(ze::degrees(85.f), (float) gfx->getWindow().getSize().x / (float) gfx->getWindow().getSize().y, 0.2f, {0.f, 0.f, 1.f})
-{
-   m_camera.setYaw(ze::degrees(-90.f));
-}
+     m_sprite({1.f, 1.f}), m_camera(ze::degrees(85.f)) {}
 
 void TestLayer::onConnection()
 {
+   float const aspectRatio = static_cast<float>(m_gfx->getWindow().getSize().x) / static_cast<float>(m_gfx->getWindow().getSize().y);
+   m_camera.setAspectRatio(aspectRatio);
+   m_camera.setSensitivity(0.2f);
+   m_camera.setPosition({ 0.f, 0.f, 1.f });
+   m_camera.setYaw(ze::degrees(-90.f));
+
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    glEnable(GL_DEPTH_TEST);
 
    zg::Image::FlipOnLoad(true);
 
-   ze::ResourceManager<zg::Texture>::add("container")->loadFile("assets/textures/container.jpg");
-   ze::ResourceManager<zg::Shader>::add("default")->loadFile("assets/shaders/default.vs", "assets/shaders/default.fs");
+   ze::ResourceManager<zg::Shader>::AddSearchPath("TestField/assets/shaders");
+   ze::ResourceManager<zg::Texture>::AddSearchPath("TestField/assets/textures");
 
-   m_sprite.setTexture(ze::ResourceManager<zg::Texture>::get("container").get());
+   ze::ResourceManager<zg::Shader>::Load("default", "default.vs", "default.fs");
+   ze::ResourceManager<zg::Texture>::Load("icon", "icon.png");
 
-   m_sprite.setOrigin({ 0.25f, 0.25f, 0.25f });
+   //ze::ResourceManager<zg::Shader>::Add("text")->loadFile("default.vs", "text.fs");
 
-   m_layout.add<glm::vec3>(1);
-   m_layout.add<glm::vec2>(1);
+   m_sprite.setTexture(ze::ResourceManager<zg::Texture>::Get("icon"));
 
-   m_renderer.setLayout(m_layout);
+   zg::VertexLayout layout;
+
+   using ShaderType = zg::VertexAttribute::Type;
+   layout.add(ShaderType::Vec2, "a_pos");
+   layout.add(ShaderType::Vec4, "a_color");
+   layout.add(ShaderType::Vec2, "a_texCoord");
+
+   m_renderer.setLayout(layout);
 }
 
 void TestLayer::tick(ze::Time deltaTime)
@@ -57,10 +71,12 @@ void TestLayer::moveCamera(ze::Time deltaTime)
 
 void TestLayer::render()
 {
-   //m_renderer.submit(m_sprite, m_sprite.getTransformation());
+   float time = ze::Core::GetTime().asSecondsFloat();
+   m_renderer.submit(m_sprite, m_sprite.getTransformationMatrix());
 
-   //m_renderer.setViewProjection(&m_camera);
-   //m_renderer.render(*ze::ResourceManager<zg::Shader>::get("default"));
+   zg::Shader shader = *ze::ResourceManager<zg::Shader>::Get("default");
+   m_renderer.setViewProjection(&m_camera);
+   m_renderer.render(shader);
 }
 
 void TestLayer::handleEvent(ze::Event& event)
@@ -69,23 +85,25 @@ void TestLayer::handleEvent(ze::Event& event)
 
    // Close window
    dispatcher.dispatch<zg::WindowClosedEvent>(
-      [](zg::WindowClosedEvent& event)
+      [] (zg::WindowClosedEvent& event)
       {
          ze::Core::Stop();
       });
 
    dispatcher.dispatch<zg::KeyPressedEvent>(
-      [&](zg::KeyPressedEvent& event)
+      [&] (zg::KeyPressedEvent& event)
       {
-         if (event.getKey() == zg::Keyboard::Key::P) // Toggle polygon mode
+         if (event.getKey() == zg::Keyboard::Key::P)
          {
+            // Toggle polygon mode
             m_polygonMode = !m_polygonMode;
             if (m_polygonMode)
                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             else
                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
          }
-         else if (event.getKey() == zg::Keyboard::Key::Escape) // Close Window
+         if (event.getKey() == zg::Keyboard::Key::Escape)
+            // Close Window
             ze::Core::Stop();
          else if (event.getKey() == zg::Keyboard::Key::M)
          {
@@ -100,7 +118,7 @@ void TestLayer::handleEvent(ze::Event& event)
       });
 
    dispatcher.dispatch<zg::MouseMovedEvent>(
-      [&](zg::MouseMovedEvent& event)
+      [&] (zg::MouseMovedEvent& event)
       {
          if (!m_grabMouse) return;
 

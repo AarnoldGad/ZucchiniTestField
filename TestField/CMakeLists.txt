@@ -2,7 +2,7 @@ ADD_EXECUTABLE(testfield)
 
 SET_TARGET_PROPERTIES(testfield PROPERTIES
                       OUTPUT_NAME TestField
-                      CXX_STANDARD 20
+                      CXX_STANDARD 17
                       CXX_STANDARD_REQUIRED ON
                       CXX_EXTENSIONS OFF
                       FOLDER "TestField"
@@ -30,6 +30,7 @@ TARGET_INCLUDE_DIRECTORIES(testfield PUBLIC
                            )
 
 TARGET_INCLUDE_DIRECTORIES(testfield SYSTEM PRIVATE
+                           "${PROJECT_SOURCE_DIR}/ZGraphics2D/ZGraphics2D/deps/glad/include"
                            $<$<PLATFORM_ID:Linux,Darwin>:/usr/include>
                            $<$<PLATFORM_ID:Linux,Darwin>:/usr/local/include>
                            )
